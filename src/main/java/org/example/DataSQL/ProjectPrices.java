@@ -1,4 +1,4 @@
-package org.example;
+package org.example.DataSQL;
 
 import lombok.Builder;
 import lombok.Data;

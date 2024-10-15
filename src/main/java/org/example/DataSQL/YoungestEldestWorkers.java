@@ -1,4 +1,4 @@
-package org.example;
+package org.example.DataSQL;
 
 import java.time.LocalDate;
 import lombok.Builder;

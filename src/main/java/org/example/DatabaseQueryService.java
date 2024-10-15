@@ -1,12 +1,11 @@
 package org.example;
 
+import org.example.DataSQL.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,17 @@ public class DatabaseQueryService {
         List<MaxProjectCountClient> projectCounts = new ArrayList<>();
         String sqlFilePath = "sql/find_max_projects_client.sql";
 
-        try (Connection connection = Database.getConnection(); Statement statement = connection.createStatement()) {
+        try {
             String sql = readingSqlFile(sqlFilePath);
-            ResultSet rs = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                String name = rs.getString("name");
-                int projectCount = rs.getInt("project_count");
-                projectCounts.add(new MaxProjectCountClient(name, projectCount));
+            try (Connection connection = Database.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+                while(rs.next()) {
+                    String name = rs.getString("name");
+                    int projectCount = rs.getInt("project_count");
+                    projectCounts.add(new MaxProjectCountClient(name, projectCount));
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading SQL file: " + e.getMessage());
@@ -44,14 +46,17 @@ public class DatabaseQueryService {
         List<MaxSalaryWorker> workerSalaries = new ArrayList<>();
         String sqlFilePath = "sql/find_max_salary_worker.sql";
 
-        try (Connection connection = Database.getConnection(); Statement statement = connection.createStatement()) {
+        try {
             String sql = readingSqlFile(sqlFilePath);
-            ResultSet rs = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                String name = rs.getString("name");
-                int salary = rs.getInt("salary");
-                workerSalaries.add(new MaxSalaryWorker(name, salary));
+            try (Connection connection = Database.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+                while(rs.next()) {
+                    String name = rs.getString("name");
+                    int salary = rs.getInt("salary");
+                    workerSalaries.add(new MaxSalaryWorker(name, salary));
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading SQL file: " + e.getMessage());
@@ -67,15 +72,18 @@ public class DatabaseQueryService {
         List<YoungestEldestWorkers> youngestAndEldestWorkers = new ArrayList<>();
         String sqlFilePath = "sql/find_youngest_eldest_workers.sql";
 
-        try (Connection connection = Database.getConnection(); Statement statement = connection.createStatement()) {
+        try {
             String sql = readingSqlFile(sqlFilePath);
-            ResultSet rs = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                String type = rs.getString("type");
-                String name = rs.getString("name");
-                LocalDate birthday = LocalDate.parse(rs.getString("birthday"));
-                youngestAndEldestWorkers.add(new YoungestEldestWorkers(type, name, birthday));
+            try (Connection connection = Database.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+                while(rs.next()) {
+                    String type = rs.getString("type");
+                    String name = rs.getString("name");
+                    LocalDate birthday = LocalDate.parse(rs.getString("birthday"));
+                    youngestAndEldestWorkers.add(new YoungestEldestWorkers(type, name, birthday));
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading SQL file: " + e.getMessage());
@@ -91,14 +99,17 @@ public class DatabaseQueryService {
         List<ProjectPrices> projectPrices = new ArrayList<>();
         String sqlFilePath = "sql/print_project_prices.sql";
 
-        try (Connection connection = Database.getConnection(); Statement statement = connection.createStatement()) {
+        try {
             String sql = readingSqlFile(sqlFilePath);
-            ResultSet rs = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                int projectId = rs.getInt("id");
-                double price = rs.getDouble("price");
-                projectPrices.add(new ProjectPrices(projectId, price));
+            try (Connection connection = Database.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+                while(rs.next()) {
+                    int projectId = rs.getInt("id");
+                    double price = rs.getDouble("price");
+                    projectPrices.add(new ProjectPrices(projectId, price));
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading SQL file: " + e.getMessage());
@@ -114,14 +125,17 @@ public class DatabaseQueryService {
         List<LongestProject> longestProjects = new ArrayList<>();
         String sqlFilePath = "sql/find_longest_project.sql";
 
-        try (Connection connection = Database.getConnection(); Statement statement = connection.createStatement()) {
+        try {
             String sql = readingSqlFile(sqlFilePath);
-            ResultSet rs = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                int projectId = rs.getInt("id");
-                int monthCount = rs.getInt("month_count");
-                longestProjects.add(new LongestProject(projectId, monthCount));
+            try (Connection connection = Database.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet rs = statement.executeQuery()) {
+                while(rs.next()) {
+                    int projectId = rs.getInt("id");
+                    int monthCount = rs.getInt("month_count");
+                    longestProjects.add(new LongestProject(projectId, monthCount));
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading SQL file: " + e.getMessage());
